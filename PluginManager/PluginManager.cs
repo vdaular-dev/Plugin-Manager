@@ -13,11 +13,12 @@ using System.Security.Policy;
 
 namespace rapid.Plugins
 {
-	/// <summary>
-	/// The PluginManager tracks changes to the plugin directory, handles reloading of the plugins,
-	/// and monitoring the plugin directory.
-	/// </summary>
-	public class PluginManager
+    /// <summary>
+    /// The PluginManager tracks changes to the plugin directory, handles reloading of the plugins,
+    /// and monitoring the plugin directory.
+    /// </summary>
+    [Serializable]
+    public class PluginManager
 	{
 		private bool started = false;
 		private bool autoReload = true;
@@ -472,14 +473,30 @@ namespace rapid.Plugins
 			return localLoader.GetStaticPropertyValue(typeName, propertyName);
 		}
 
-		/// <summary>
-		/// Returns the result of a static method call
-		/// </summary>
-		/// <param name="typeName">The type to call the static method on</param>
-		/// <param name="propertyName">The name of the method to call</param>
-		/// <param name="methodParams">The parameters to pass to the method</param>
-		/// <returns>The return value of the method</returns>
-		public object CallStaticMethod(string typeName, string methodName, object[] methodParams)
+        /// <summary>
+        /// Set the value of a static property
+        /// </summary>
+        /// <param name="typeName">The type to retrieve the static property value from</param>
+        /// <param name="propertyName">The name of the property to retrieve</param>
+        /// <param name="propertySetValue">The value to set the property</param>
+        /// <returns>The value of the static property</returns>
+        public void SetStaticPropertyValue(string typeName, string propertyName, object propertySetValue)
+        {
+            if (!started)
+            {
+                throw new InvalidOperationException("PluginManager has not been started.");
+            }
+            localLoader.SetStaticPropertyValue(typeName, propertyName, propertySetValue);
+        }
+
+        /// <summary>
+        /// Returns the result of a static method call
+        /// </summary>
+        /// <param name="typeName">The type to call the static method on</param>
+        /// <param name="propertyName">The name of the method to call</param>
+        /// <param name="methodParams">The parameters to pass to the method</param>
+        /// <returns>The return value of the method</returns>
+        public object CallStaticMethod(string typeName, string methodName, object[] methodParams)
 		{
 			if (!started)
 			{

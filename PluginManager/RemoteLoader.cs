@@ -241,14 +241,34 @@ namespace rapid.Plugins
 				BindingFlags.Public | BindingFlags.Static).GetValue(null, null);
 		}
 
-		/// <summary>
-		/// Returns the result of a static method call
-		/// </summary>
-		/// <param name="typeName">The type to call the static method on</param>
-		/// <param name="propertyName">The name of the method to call</param>
-		/// <param name="methodParams">The parameters to pass to the method</param>
-		/// <returns>The return value of the method</returns>
-		public object CallStaticMethod(string typeName, string methodName, object[] methodParams)
+        /// <summary>
+        /// Set the value of a static property
+        /// </summary>
+        /// <param name="typeName">The type to retrieve the static property value from</param>
+        /// <param name="propertyName">The name of the property to retrieve</param>
+        /// <param name="propertySetValue">The value to set the property</param>
+        /// <returns>The value of the static property</returns>
+        public void SetStaticPropertyValue(string typeName, string propertyName, object propertySetValue)
+        {
+            Type type = GetTypeByName(typeName);
+            if (type == null)
+            {
+                throw new ArgumentException("Cannot find a type of name " + typeName +
+                    " within the plugins or the common library.");
+            }
+
+            type.GetProperty(propertyName,
+                BindingFlags.Public | BindingFlags.Static).SetValue(null, propertySetValue, null);
+        }
+
+        /// <summary>
+        /// Returns the result of a static method call
+        /// </summary>
+        /// <param name="typeName">The type to call the static method on</param>
+        /// <param name="propertyName">The name of the method to call</param>
+        /// <param name="methodParams">The parameters to pass to the method</param>
+        /// <returns>The return value of the method</returns>
+        public object CallStaticMethod(string typeName, string methodName, object[] methodParams)
 		{
 			Type type = GetTypeByName(typeName);
 			if (type == null)
