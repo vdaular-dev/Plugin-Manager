@@ -12,3 +12,7 @@
 AppDomain을 새롭게 생성하고, 생성된 곳에 DLL을 동적 로딩합니다. 
 Plugin Manager를 Stop하면 AppDomain을 언로드 함으로 C# DLL 정적 로딩할 시에 메모리 문제점을 해결하였습니다.
 ```
+---
+## 환경
+* OS : Windows 10 x64
+* IDE : Visual Studio 2015 Pro
